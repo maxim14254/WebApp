@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @using WebApplication5.Controllers
+    @{
+        Layout = null;
+    }
+
+    <script>
+
+    function Button_Click() {
+        document.location.href = "/WriteAll";// переход назад на страницу WriteAll/Index
+    }
+
+    function Button2_Click() {
+        document.location.href = "Get";// переход на страницу добавления учредителя Founter.aspx
+    }
+
+    </script>
+
+    <style type="text/css">
+        #data {
+            border-collapse: collapse;
+        }
+
+            #data td {
+                border: 2px solid;
+            }
+
+                #data td.empty {
+                    border-left: 0;
+                    border-bottom: 0;
+                    border-right: 0;
+                    border-top: 0;
+                }
+    </style>
+    </head>
+    <body>
+        <h2 align="center">Учредители клиента @String.Format("\"{0}\"", FounterAllController.a)</h2>
+        <br />
+        <table cellspacing="0" cellpadding="12" align="center" id="data">
+            <tr>
+                <td align="center"><b>Id</b></td>
+                <td align="center"><b>ИНН</b></td>
+                <td align="center"><b>ФИО</b></td>
+                <td align="center"><b>Дата создания</b></td>
+                <td align="center"><b>Дата обновления</b></td>
+                <td colspan="2" class="empty"></td>
+            </tr>
+            @{
+
+                for (int i = 0; i < WebApplication5.Controllers.FounterAllController.founters.Count; i++)// перебираем всех учредителей у данного клиента и выводим их и выво
+                {
+                    <tr>
+                        <td align="center">@FounterAllController.founters[i].Id.ToString() </td>
+                        <td align="center">@FounterAllController.founters[i].INN.ToString() </td>
+                        <td align="center">@FounterAllController.founters[i].FIO.ToString() </td>
+                        <td align="center">@FounterAllController.founters[i].DateCreate.ToString() </td>
+                        <td align="center">@FounterAllController.founters[i].DateUpdate.ToString() </td>
+                        @*Ссылка для прехода на страницу изменения данных об учредителе UpFounter.aspx*@
+                        <td align="center" class="empty"> <a href="@String.Format("{0}/UpFounter.aspx?inn={1}&name={2}&id={3}", WriteAllController.domainName, FounterAllController.founters[i].INN.ToString(), FounterAllController.founters[i].FIO.ToString(), FounterAllController.IdClient)">Изменить</a></td>
+                    </tr>
+                }
+            }
+        </table>
+        <br />
+        <input id="Button1" type="button" value="OK" onclick="Button_Click()" style="margin-left:27%; width:50px" />
+        <input id="Button2" name="Button2" type="button" value="Добавить" onclick="Button2_Click()" style="margin-left:2%; width:145px" runat="server" @FounterAllController.disabled/>
+    </body>
+    </html>

@@ -1,0 +1,67 @@
+﻿@using WebApplication5.Controllers
+@{
+    Layout = null;
+}
+
+<script>
+    function Button_Click() {
+        document.location.href = "/WebForm1.aspx";// перходим назад на главную страницу
+    }
+    function Button2_Click() {
+        document.location.href = "/Create.aspx";// переходим на страницу создания клиента
+    }
+
+</script>
+
+<style type="text/css">
+    #data {
+        border-collapse: collapse;
+    }
+
+        #data td {
+            border: 2px solid;
+        }
+
+            #data td.empty {
+                border-left: 0;
+                border-bottom: 0;
+                border-right: 0;
+                border-top: 0;
+            }
+</style>
+
+<h2 align="center">Клиенты</h2>
+<br />
+<table id="data" cellspacing="0" cellpadding="12" align="center">
+    <tr>
+        <td align="center"><b>Id</b></td>
+        <td align="center"><b>ИНН</b></td>
+        <td align="center"><b>Имя</b></td>
+        <td align="center"><b>Тип</b></td>
+        <td align="center"><b>Дата создания</b></td>
+        <td align="center"><b>Дата обновления</b></td>
+        <td align="center"><b>Количество учредителей</b></td>
+    </tr>
+    @{
+        for (int i = 0; i < WebApplication5.Controllers.WriteAllController.clients.Count; i++)// перебираем и выводи всех клиентов
+        {
+        <tr>
+            <td align="center">@WriteAllController.clients[i].Id.ToString() </td>
+            <td align="center">@WriteAllController.clients[i].INN.ToString() </td>
+            <td align="center">@WriteAllController.clients[i].Name.ToString() </td>
+            <td align="center">@WriteAllController.clients[i].Type.ToString() </td>
+            <td align="center">@WriteAllController.clients[i].DateCreate.ToString() </td>
+            <td align="center">@WriteAllController.clients[i].DateUpdate.ToString() </td>
+            @*Отображение кол-ва учредителей у клиента, с встроенной ссылкой для прехода на страницу отображения и редактирования учпедителей FounterAll/Index*@
+            <td align="center"> <a href="@String.Format("{0}/FounterAll/Index?Nameclient={1}&id={2}", WriteAllController.domainName, WriteAllController.clients[i].Name.ToString(), WriteAllController.clients[i].Id)">@WriteAllController.clients[i].FoundersCount</a></td>
+            @*Отображение ссылки для перехода на страницу Up.aspx, редактирования данных  об клиенте*@
+            <td align="center" class="empty"> <a href="@String.Format("{0}/Up.aspx?inn={1}&name={2}&type={3}&id={4}", WriteAllController.domainName, WriteAllController.clients[i].INN.ToString(), WriteAllController.clients[i].Name.ToString(),WriteAllController.clients[i].Type.ToString(),WriteAllController.clients[i].Id.ToString())">Изменить</a></td>
+        </tr>
+        }
+    }
+</table>
+<br/>
+<input id="Button1" type="button" value="OK" onclick="Button_Click()" style="margin-left:17%; width:50px" />
+<input id="Button2" type="button" value="Добавить" onclick="Button2_Click()" style="margin-left:2%; width:145px" />
+
+
